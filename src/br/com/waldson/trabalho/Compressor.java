@@ -1,12 +1,13 @@
 package br.com.waldson.trabalho;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
-public class Code {
+public class Compressor {
 
   private Node raiz;
 
-  public Code(MinHeap min) {
+  public Compressor(MinHeap min) {
     this.raiz = MakeTree(min);
   }
 
@@ -37,7 +38,6 @@ public class Code {
   public HashMap<Character, String> getMapCodes(){
     return raiz.getMapCodes();
   }
-
 
 
 }

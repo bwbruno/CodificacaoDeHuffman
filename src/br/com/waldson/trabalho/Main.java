@@ -1,13 +1,16 @@
 package br.com.waldson.trabalho;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.BitSet;
 import java.util.HashMap;
 
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         String command = args[0];
         String filename = args[1];
@@ -36,7 +39,7 @@ public class Main {
 
         MinHeap min = new MinHeap();
 
-        HashMap<Character, Integer> dictionary = StringFrequency.evaluate("lollapalooza");
+        HashMap<Character, Integer> dictionary = StringHelper.mapFrequency("lollapalooza");
         for (Character character: dictionary.keySet())
             min.addNode(character, dictionary.get(character));
 
@@ -51,12 +54,33 @@ public class Main {
 
         System.out.println("_---------------------");
 
-        Code code = new Code(min);
-        code.print();
+        Compressor compressor = new Compressor(min);
+        compressor.print();
 
 
-      HashMap<Character, String> mapCodes = code.getMapCodes();
+      HashMap<Character, String> mapCodes = compressor.getMapCodes();
       for (Character character: mapCodes.keySet())
         System.out.println(character.toString() + " " + mapCodes.get(character));
+
+      String code = StringHelper.compress("lollapalooza", mapCodes);
+
+        System.out.println("------" + code);
+
+      BitSet bits = StringHelper.stringToBitSet(code);
+
+
+        for (int i = 0; i < bits.length(); i++) {
+            System.out.println("bits[" + i + "]: " + bits.get(i));
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(bits);
+        oos.close();
+        byte[] bytes = baos.toByteArray();
+        System.out.println(bytes.length);
+
+
     }
+
 }
