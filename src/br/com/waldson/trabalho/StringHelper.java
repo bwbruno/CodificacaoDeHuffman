@@ -48,7 +48,6 @@ public class StringHelper {
 
   // "111111"
   public static BitSet stringToBitSet(String text) {
-
     BitSet bits = new BitSet();
 
     for (int i = 0; i < text.length(); i++) {
@@ -59,13 +58,22 @@ public class StringHelper {
         bits.set(i, true);
     }
 
-
     return bits;
   }
 
-  public static void decodeTable() {
+  public static String bitSetToString(BitSet bits) {
+    String string = "";
+    for (int i = 0; i < bits.length(); i++) {
+      if (bits.get(i))
+        string += "1";
+      else
+        string += "0";
+    }
 
+    return string;
   }
+
+
 
   public static String removeExtension(String filename) {
     if (filename != null && filename.lastIndexOf(".") > 0)

@@ -13,13 +13,16 @@ import static java.nio.file.Files.*;
 public class Compressor {
 
   private Node raiz;
-  private String filename;
-  private String compressedFileName;
+  private String txt;
+  private String edz;
+  private String edt;
+
   HashMap<Character, String> codeTable;
 
-  public Compressor(String filename, String compressedFileName) throws IOException {
-    this.filename = filename;
-    this.compressedFileName = compressedFileName;
+  public Compressor(String txt, String edz, String edt) throws IOException {
+    this.txt = txt;
+    this.edz = edz;
+    this.edt = edt;
 
     String text = this.getText();
     HashMap<Character, Integer> letterFrequencyTable = StringHelper.letterFrequencyOf(text);
@@ -36,7 +39,7 @@ public class Compressor {
   }
 
   public String getText() throws IOException {
-    return new String(readAllBytes(Paths.get(filename)));
+    return new String(readAllBytes(Paths.get(txt)));
   }
 
   private MinHeap createMinHeap(HashMap<Character, Integer> letterFrequencyTable) {
@@ -76,7 +79,7 @@ public class Compressor {
 
   private void writeFile() throws IOException {
     BitSet bits = getBitEncodedText();
-    FileOutputStream os = new FileOutputStream(this.compressedFileName);
+    FileOutputStream os = new FileOutputStream(this.edz);
     os.write(bits.toByteArray());
     os.close();
   }
@@ -108,12 +111,10 @@ public class Compressor {
   }
 
   private void writeDecodeTableFile() throws IOException {
-    String file = StringHelper.removeExtension(compressedFileName) + ".edt";
-
     FileWriter writer = null;
 
     try {
-      writer = new FileWriter(file);
+      writer = new FileWriter(edt);
 
       for (Character character: this.codeTable.keySet())
         writer.write(character + this.codeTable.get(character) + "\n");
@@ -126,8 +127,8 @@ public class Compressor {
   }
 
   public float getCompressionRatio() {
-    File file = new File(this.filename);
-    File compressed = new File(this.compressedFileName);
+    File file = new File(this.txt);
+    File compressed = new File(this.edz);
 
     return (compressed.length() * 100) / file.length();
   }

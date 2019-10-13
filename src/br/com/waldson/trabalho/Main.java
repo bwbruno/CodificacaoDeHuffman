@@ -9,33 +9,23 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
       String command = args[0];
-      String filename = args[1];
-      String compressedFileName = args[2];
-
-      System.out.println("Lendo arquivo: " + filename);
+      System.out.println("Lendo arquivo: " + args[1]);
 
       if (command.equals("compress")) {
-        Compressor compressor = new Compressor(filename, compressedFileName);
+        String txt = args[1];
+        String edz = args[2];
+        String edt = args[3];
+        Compressor compressor = new Compressor(txt, edz, edt);
 
       } else if (command.equals("extract")) {
+        String edz = args[1];
+        String edt = args[2];
+        String txt = args[3];
+        Extractor extractor = new Extractor(edz, edt, txt);
 
       } else {
           System.out.println("Comando inválido");
       }
-
-      InputStream is = new FileInputStream(compressedFileName);
-      long fileSize = new File(filename).length();
-      byte[] allBytes = new byte[(int) fileSize];
-      is.read(allBytes);
-
-      BitSet bits = BitSet.valueOf(allBytes);
-
-      for (int i = 0; i < bits.length(); i++) {
-        System.out.println("isBits[" + i + "]: " + bits.get(i));
-      }
-
-
-
 
     }
 
