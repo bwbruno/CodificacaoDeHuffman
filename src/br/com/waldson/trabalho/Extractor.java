@@ -61,11 +61,11 @@ public class Extractor {
     is.read(allBytes);
 
     BitSet bits = BitSet.valueOf(allBytes);
-
+/*
     for (int i = 0; i < bits.length(); i++) {
       System.out.println("isBits[" + i + "]: " + bits.get(i));
     }
-
+*/
     this.compressedText = StringHelper.bitSetToString(bits);
   }
 
@@ -93,10 +93,10 @@ public class Extractor {
       code = "";
 
     }
-
+/*
     for (String string: table.keySet())
      System.out.println(string + ": " + table.get(string));
-
+*/
     return table;
   }
 

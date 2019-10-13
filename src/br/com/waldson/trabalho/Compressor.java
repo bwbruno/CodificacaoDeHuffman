@@ -48,8 +48,6 @@ public class Compressor {
     for (Character character: letterFrequencyTable.keySet())
       min.addNode(character, letterFrequencyTable.get(character));
 
-    min.printNodes();
-
     return min;
   }
 
@@ -98,7 +96,7 @@ public class Compressor {
       Character c = text.charAt(i);
       codedText += table.get(c);
     }
-
+/*
     // Imprime o código de 8 em 8
     for (int i = 0; i < codedText.length(); i++) {
       if (i % 8 == 0)
@@ -106,7 +104,7 @@ public class Compressor {
       System.out.print(codedText.charAt(i));
     }
     System.out.println("\nfim encode()");
-
+*/
     return codedText;
   }
 

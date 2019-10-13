@@ -23,19 +23,8 @@ public class StringHelper {
     return dictionary;
   }
 
-  public static String compress(String text, HashMap<Character, String> table) {
-
-    String code = new String();
-    for (int i = 0; i < text.length(); i++) {
-      Character c = text.charAt(i);
-      code += table.get(c);
-    }
-
-    return code;
-  }
-  
   public static void print(String text) {
-    
+
     HashMap<Character, Integer> dictionary = letterFrequencyOf(text);
 
     for (Character character: dictionary.keySet()) {
