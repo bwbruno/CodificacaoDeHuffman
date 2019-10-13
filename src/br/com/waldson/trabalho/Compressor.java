@@ -1,6 +1,8 @@
 package br.com.waldson.trabalho;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.BitSet;
@@ -11,35 +13,33 @@ import static java.nio.file.Files.*;
 public class Compressor {
 
   private Node raiz;
+  private String filename;
+  private String compressedFileName;
+  HashMap<Character, String> codeTable;
 
   public Compressor(String filename, String compressedFileName) throws IOException {
+    this.filename = filename;
+    this.compressedFileName = compressedFileName;
 
-    String text = new String(readAllBytes(Paths.get(filename)));
-    System.out.println("filename" + filename);
-
+    String text = this.getText();
+    HashMap<Character, Integer> letterFrequencyTable = StringHelper.letterFrequencyOf(text);
     MinHeap min = new MinHeap();
-    min = createMinHeap(StringHelper.letterFrequencyOf(text));
+    min = createMinHeap(letterFrequencyTable);
+
     this.raiz = createTree(min);
+    this.codeTable = getCodeTable();
 
-    String codedText = encode(text, getCodeTable());
-    BitSet bits = StringHelper.stringToBitSet(codedText);
-    writeFile(compressedFileName, bits);
+    writeFile();
+    writeDecodeTableFile();
 
-    System.out.println(text);
+    System.out.println("O arquivo foi possui " + getCompressionRatio() + "% do seu tamanho original");
   }
 
-  private void writeFile(String filename, BitSet bits) throws IOException {
-    FileOutputStream os = new FileOutputStream(filename);
-    os.write(bits.toByteArray());
-    os.close();
-  }
-
-  public Compressor(MinHeap min) {
-    this.raiz = createTree(min);
+  public String getText() throws IOException {
+    return new String(readAllBytes(Paths.get(filename)));
   }
 
   private MinHeap createMinHeap(HashMap<Character, Integer> letterFrequencyTable) {
-
     MinHeap min = new MinHeap();
 
     for (Character character: letterFrequencyTable.keySet())
@@ -50,8 +50,8 @@ public class Compressor {
     return min;
   }
 
-  private Node createTree(MinHeap min) {
 
+  private Node createTree(MinHeap min) {
     if (min.getSize() == 1)
       return min.peek();
 
@@ -70,15 +70,25 @@ public class Compressor {
     return createTree(min);
   }
 
-  public void print() {
-    this.raiz.print(this.raiz, "");
-  }
-
   public HashMap<Character, String> getCodeTable(){
     return raiz.getCodeTable();
   }
 
-  public static String encode(String text, HashMap<Character, String> table) {
+  private void writeFile() throws IOException {
+    BitSet bits = getBitEncodedText();
+    FileOutputStream os = new FileOutputStream(this.compressedFileName);
+    os.write(bits.toByteArray());
+    os.close();
+  }
+
+  public BitSet getBitEncodedText() throws IOException {
+    String codedText = this.encodeText();
+    return StringHelper.stringToBitSet(codedText);
+  }
+
+  public String encodeText() throws IOException {
+    String text = this.getText();
+    HashMap<Character, String> table = this.getCodeTable();
 
     String codedText = new String();
     for (int i = 0; i < text.length(); i++) {
@@ -95,6 +105,35 @@ public class Compressor {
     System.out.println("\nfim encode()");
 
     return codedText;
+  }
+
+  private void writeDecodeTableFile() throws IOException {
+    String file = StringHelper.removeExtension(compressedFileName) + ".edt";
+
+    FileWriter writer = null;
+
+    try {
+      writer = new FileWriter(file);
+
+      for (Character character: this.codeTable.keySet())
+        writer.write(character + this.codeTable.get(character) + "\n");
+
+      writer.close();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public float getCompressionRatio() {
+    File file = new File(this.filename);
+    File compressed = new File(this.compressedFileName);
+
+    return (compressed.length() * 100) / file.length();
+  }
+
+  public void print() {
+    this.raiz.print(this.raiz, "");
   }
 
 }
