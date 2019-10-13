@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class StringHelper {
 
-  public static HashMap<Character, Integer> mapFrequency(String text) {
+  public static HashMap<Character, Integer> letterFrequencyOf(String text) {
 
     HashMap<Character, Integer> dictionary = new HashMap<>();
 
@@ -29,7 +29,6 @@ public class StringHelper {
     for (int i = 0; i < text.length(); i++) {
       Character c = text.charAt(i);
       code += table.get(c);
-      System.out.println("code : " + code);
     }
 
     return code;
@@ -37,7 +36,7 @@ public class StringHelper {
   
   public static void print(String text) {
     
-    HashMap<Character, Integer> dictionary = mapFrequency(text);
+    HashMap<Character, Integer> dictionary = letterFrequencyOf(text);
 
     for (Character character: dictionary.keySet()) {
       String key = character.toString();
@@ -63,5 +62,17 @@ public class StringHelper {
 
     return bits;
   }
+
+  public static void decodeTable() {
+
+  }
+
+  public static String removeExtension(String filename) {
+    if (filename != null && filename.lastIndexOf(".") > 0)
+      return filename.substring(0, filename.lastIndexOf("."));
+    else
+      return filename;
+  }
+
 
 }

@@ -36,25 +36,25 @@ public class Node {
     this.right = right;
   }
 
-  public HashMap<Character, String> getMapCodes() {
+  public HashMap<Character, String> getCodeTable() {
     HashMap<Character, String> mapCodes = new HashMap<>();
-    getMapCodes("", mapCodes);
+    getCodeTable("", mapCodes);
     return mapCodes;
   }
 
-  public void getMapCodes(String code,  HashMap<Character, String> mapCodes) {
+  public void getCodeTable(String code, HashMap<Character, String> codesTable) {
 
     if (this.letter != null) {
-      mapCodes.put(this.letter, code);
+      codesTable.put(this.letter, code);
     }
 
     if (this.left != null) {
 
-      this.left.getMapCodes(code + '0', mapCodes);
+      this.left.getCodeTable(code + '0', codesTable);
     }
 
     if (this.right != null) {
-      this.right.getMapCodes(code + '1', mapCodes);
+      this.right.getCodeTable(code + '1', codesTable);
     }
 
   }
@@ -71,8 +71,6 @@ public class Node {
       this.right.accessPreOrder(v, code + '1', mapCodes);
     }
   }
-
-
 
   public boolean isLeaf() {
     return (left == null && right == null);
