@@ -1,8 +1,11 @@
 package br.com.waldson.trabalho;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.BitSet;
 import java.util.HashMap;
+
+import static java.nio.file.Files.readAllBytes;
 
 public class Extractor {
 
@@ -24,9 +27,9 @@ public class Extractor {
     writeFile();
   }
 
-  private void writeFile() {
+  private void writeFile() throws IOException {
     FileWriter writer = null;
-
+    
     try {
       writer = new FileWriter(this.txt);
       writer.write(this.decodedText);
@@ -34,6 +37,26 @@ public class Extractor {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    
+    checkLastByte();
+  }
+
+  private void checkLastByte() throws IOException {
+
+    File file = new File(txt);
+    RandomAccessFile raf = new RandomAccessFile(file, "r");
+
+    byte b[] = readAllBytes(Paths.get(txt));
+    raf.seek(file.length() - 1);
+    raf.read(b, 0, 1);
+    BitSet bit = new BitSet(8);
+    bit = BitSet.valueOf(b);
+
+    System.out.println("Bytes:: " + StringHelper.bitSetToString(bit));
+
+
+
+
   }
 
   private void decodeText() {
