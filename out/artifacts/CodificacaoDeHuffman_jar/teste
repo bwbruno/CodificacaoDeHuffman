@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# qwd=`printf "%q\n" "$(pwd)"`
+
+if [ $1 == "remove" ]
+    then
+        rm testes/$2.txt
+fi
+
+if [ $1 ==  "download" ]
+	then	
+		curl https://transfer.sh/moUFK/teste -o teste.zip
+		unzip teste.zip
+fi
+
+cd ./testes
+
+mkdir -p -v diff
+mkdir -p -v edz
+
+if [ $1 == "compress" ]
+	then
+		echo -e "\n\n================ COMPRESS ================"
+		for filename in *.txt
+		do
+			echo -e "\n"
+			echo "$filename"
+			java -jar ./../CodificacaoDeHuffman.jar compress $filename edz/${filename%.txt}.edz edz/${filename%.txt}.edt
+		done
+fi
+
+if [ $1 == "extract" ]
+	then
+		echo -e "\n\n================ EXTRACT ================"
+		for filename in *.txt
+		do
+			echo -e "\nExtraindo $filename"
+			java -jar ./../CodificacaoDeHuffman.jar extract edz/${filename%.txt}.edz edz/${filename%.txt}.edt edz/$filename
+		done
+fi
+
+if [ $1 == "diff" ]
+	then
+		echo -e "\n\n================ DIFF ================"
+		for filename in *.txt
+		do
+			echo -e "\n\n--------------- Inicio diff ($filename)---------------"
+			touch ./diff/$filename
+			diff ./$filename ./edz/$filename | tee ./diff/$filename
+			echo -e "---------------  Fim diff  ---------------"
+		done
+fi
+
+# for filename in *.txt
+# do
+#	echo -e "\n\n\n"
+#	echo "$filename"
+	# java -jar /home/bwbruno/CodificacaoDeHuffman/out/artifacts/CodificacaoDeHuffman_jar/CodificacaoDeHuffman.jar compress ./$filename ./edz/${filename%.txt}.edz ./edz/${filename%.txt}.edt
+	# java -jar /home/bwbruno/CodificacaoDeHuffman/out/artifacts/CodificacaoDeHuffman_jar/CodificacaoDeHuffman.jar extract ./edz/${filename%.txt}.edz ./edz/${filename%.txt}.edt ./edz/$filename
+	# diff ./$filename ./edz/$filename
+# done

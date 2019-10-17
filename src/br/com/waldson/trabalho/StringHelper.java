@@ -10,7 +10,7 @@ public class StringHelper {
     HashMap<Character, Integer> dictionary = new HashMap<>();
 
     for (int i = 0; i < text.length(); i++) {
-      char character = new Character(text.charAt(i));
+      char character = text.charAt(i);
 
       Integer counter = dictionary.get(character);
 

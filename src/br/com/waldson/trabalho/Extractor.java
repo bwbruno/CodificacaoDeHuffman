@@ -21,7 +21,6 @@ public class Extractor {
     this.decodedTable = readDecodedTableFile();
     readCompressedFile();
     decodeText();
-    System.out.print(decodedText);
     writeFile();
   }
 

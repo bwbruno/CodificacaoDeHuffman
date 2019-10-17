@@ -53,6 +53,10 @@ public class Compressor {
 
 
   private Node createTree(MinHeap min) {
+
+    if (min.getSize() == 0)
+      return new Node(null, 1);
+
     if (min.getSize() == 1)
       return min.peek();
 
@@ -128,7 +132,7 @@ public class Compressor {
     File file = new File(this.txt);
     File compressed = new File(this.edz);
 
-    return (compressed.length() * 100) / file.length();
+    return (compressed.length() * 100) / (file.length() == 0 ? 1 : file.length()) ;
   }
 
   public void print() {
