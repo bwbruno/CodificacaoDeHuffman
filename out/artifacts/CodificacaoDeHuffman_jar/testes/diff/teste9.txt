@@ -1,5 +1,0 @@
-26c26
-< abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
----
-> abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
-\ Falta o caracter nova linha no final do arquivo

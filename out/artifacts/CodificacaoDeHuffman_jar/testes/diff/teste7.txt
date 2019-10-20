@@ -1,5 +1,0 @@
-51c51
-< abababababababababababababababababababababababababababababababababababababababababababababababababab
----
-> abababababababababababababababababababababababababababababababababababababababababababababababababab
-\ Falta o caracter nova linha no final do arquivo

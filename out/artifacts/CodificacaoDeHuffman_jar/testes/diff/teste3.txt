@@ -1,5 +1,0 @@
-26c26
-< atuação.
----
-> atuação.
-\ Falta o caracter nova linha no final do arquivo
